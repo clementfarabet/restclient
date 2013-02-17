@@ -40,12 +40,12 @@ local function formatUrl(url,options)
    return url
 end
 
--- Get functions:
+-- Get:
 local get = function(args)
    -- URL:
    local url = args.url or (args.host .. (args.path or '/'))
    local query = args.query
-   local format = args.format or 'string' -- 'json', 'image'
+   local format = args.format or 'raw' -- or 'json', 'image'
 
    -- GET:
    local response = {}
@@ -58,6 +58,8 @@ local get = function(args)
    -- OK?
    if not ok then
       error('restclient.get: ' .. code)
+   elseif code ~= 200 then
+      error('restclient.get: invalid path (code = ' .. code .. ')')
    end
 
    -- Produce response:
@@ -71,6 +73,44 @@ local get = function(args)
    end
 
    -- Return response:
+   return response
+end
+
+-- Put:
+local put = function(args)
+   -- URL:
+   local url = args.url or (args.host .. (args.path or '/'))
+   local form = args.form or error('please provide field: form')
+   local format = args.format or 'raw'  -- or 'json'
+
+   -- Serialize form:
+   local payload = json.encode(form)
+
+   -- GET:
+   local response = {}
+   local ok,code = http.request{
+      url = url,
+      method = 'POST',
+      source = ltn12.source.string(payload),
+      sink = ltn12.sink.table(response),
+      headers = {
+         ['content-Type'] = 'application/json',
+         ['content-length'] = #payload,
+      }
+   }
+   
+   -- OK?
+   if not ok then
+      error('restclient.get: ' .. code)
+   elseif code ~= 200 then
+      error('restclient.get: invalid path (code = ' .. code .. ')')
+   end
+
+   -- Response
+   response = table.concat(response)
+   if format == 'json' then
+      response = json.decode(response)
+   end
    return response
 end
 
