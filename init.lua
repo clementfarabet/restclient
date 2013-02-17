@@ -77,7 +77,7 @@ local get = function(args)
 end
 
 -- Put:
-local put = function(args)
+local post = function(args)
    -- URL:
    local url = args.url or (args.host .. (args.path or '/'))
    local form = args.form or error('please provide field: form')
@@ -101,9 +101,9 @@ local put = function(args)
    
    -- OK?
    if not ok then
-      error('restclient.get: ' .. code)
+      error('restclient.post: ' .. code)
    elseif code ~= 200 then
-      error('restclient.get: invalid path (code = ' .. code .. ')')
+      error('restclient.post: invalid path (code = ' .. code .. ')')
    end
 
    -- Response
@@ -117,6 +117,6 @@ end
 -- Exports:
 return {
    get = get,
-   put = put,
+   post = post,
 }
 
