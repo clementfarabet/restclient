@@ -83,8 +83,23 @@ local post = function(args)
    local form = args.form or error('please provide field: form')
    local format = args.format or 'raw'  -- or 'json'
 
+   -- Serialize data keys:
+   local nform = {}
+   for k,v in pairs(form) do
+      if type(v) == 'table' then
+         local data = v.data or error('expecting table to have a field: data')
+         local format = v.format
+         if format == 'b64' then
+            v = mime.b64(data)
+         else
+            v = data
+         end
+      end
+      nform[k] = v
+   end
+
    -- Serialize form:
-   local payload = json.encode(form)
+   local payload = json.encode(nform)
 
    -- GET:
    local response = {}
