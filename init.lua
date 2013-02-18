@@ -89,7 +89,7 @@ local post = function(args)
       if type(v) == 'table' then
          local data = v.data or error('expecting table to have a field: data')
          local format = v.format
-         if format == 'b64' then
+         if format == 'base64' then
             v = mime.b64(data)
          else
             v = data
