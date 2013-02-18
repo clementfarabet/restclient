@@ -1,9 +1,9 @@
 package = "restclient"
-version = "1.0.0-0"
+version = "0.1-0"
 
 source = {
    url = "git://github.com/clementfarabet/restclient",
-   tag = "1.0.0-0",
+   tag = "master",
 }
 
 description = {
