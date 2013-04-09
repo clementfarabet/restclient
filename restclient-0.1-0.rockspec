@@ -25,5 +25,6 @@ build = {
    type = "builtin",
    modules = {
       ['restclient.init'] = 'init.lua',
+      ['restclient.base64'] = 'base64.lua',
    }
 }

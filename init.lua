@@ -9,6 +9,7 @@ local http = require 'socket.http'
 local surl = require 'socket.url'
 local mime = require 'mime'
 local ltn12 = require 'ltn12'
+local base64 = require 'restclient.base64'
 local ok,json = pcall(require, 'cjson')
 if not ok then
    ok,json = pcall(require, 'json')
@@ -90,7 +91,7 @@ local post = function(args)
          local data = v.data or error('expecting table to have a field: data')
          local format = v.format
          if format == 'base64' then
-            v = mime.b64(data)
+            v = base64.encode(data)
          else
             v = data
          end
