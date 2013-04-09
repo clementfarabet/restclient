@@ -57,9 +57,9 @@ local get = function(args)
 
    -- OK?
    if not ok then
-      error('restclient.get: ' .. code)
+      return nil,code
    elseif code ~= 200 then
-      error('restclient.get: invalid path (code = ' .. code .. ')')
+      return nil,code
    end
 
    -- Produce response:
@@ -73,7 +73,7 @@ local get = function(args)
    end
 
    -- Return response:
-   return response
+   return response,code
 end
 
 -- Put:
@@ -100,7 +100,7 @@ local post = function(args)
 
    -- Serialize form:
    local payload = json.encode(nform)
-
+   
    -- GET:
    local response = {}
    local ok,code = http.request{
@@ -116,9 +116,9 @@ local post = function(args)
    
    -- OK?
    if not ok then
-      error('restclient.post: ' .. code)
+      return nil,code
    elseif code ~= 200 then
-      error('restclient.post: invalid path (code = ' .. code .. ')')
+      return nil,code
    end
 
    -- Response
@@ -126,7 +126,7 @@ local post = function(args)
    if format == 'json' then
       response = json.decode(response)
    end
-   return response
+   return response,code
 end
 
 -- Exports:
