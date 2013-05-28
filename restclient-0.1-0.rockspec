@@ -17,6 +17,7 @@ A client to REST APIs.
 
 dependencies = {
    "luasocket >= 2.0.2",
+   "luasec >= 0.4",
    "lua-cjson >= 2.1.0",
    "graphicsmagick >= 1.0.0",
 }

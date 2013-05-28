@@ -7,6 +7,7 @@
 local socket = require 'socket'
 local http = require 'socket.http'
 local surl = require 'socket.url'
+local https = require 'ssl.https'
 local mime = require 'mime'
 local ltn12 = require 'ltn12'
 local base64 = require 'restclient.base64'
@@ -48,9 +49,15 @@ local get = function(args)
    local query = args.query
    local format = args.format or 'raw' -- or 'json', 'image'
 
+   -- HTTPS?
+   local base = http
+   if url:find('^https') then
+      base = https
+   end
+
    -- GET:
    local response = {}
-   local ok,code = http.request{
+   local ok,code = base.request{
       url = formatUrl(url,query),
       method = 'GET',
       sink = ltn12.sink.table(response)
